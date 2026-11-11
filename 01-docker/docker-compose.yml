@@ -1,0 +1,22 @@
+services:
+  pgdatabase:            # tên service, đồng thời là "tên máy" trong mạng nội bộ
+    image: postgres:16
+    environment:         # biến môi trường, Postgres đọc khi khởi động lần đầu
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"      # cổng_máy_bạn : cổng_trong_container
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # nơi Postgres lưu dữ liệu
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "8080:80"        # pgAdmin chạy cổng 80 trong container, bạn mở bằng localhost:8080
+
+volumes:
+  pgdata:                # khai báo named volume
